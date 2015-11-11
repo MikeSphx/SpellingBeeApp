@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+	
+	
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+	
+	<script src="js/jquery-git.js"</script>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/responsivevoice.js"></script>
+
+	<!--
+	<script src="cordova.js"></script>
+	<script src="js/google-tts.min.js"></script>
+	<script src="js/soundmanager2.js"></script>
+	<script src="js/speakGenerator.js"></script>
+	<script src="https://s3.amazonaws.com/codiqa-cdn/codiqa.ext.js"></script>
+	-->
+	<script src="js/Lab6.js"></script>
+	
+		<script>
+			function ReadButtons()
+			{
+				var xmlhttp;
+				if (window.XMLHttpRequest) {
+					// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp=new XMLHttpRequest();
+				} else {// code for IE6, IE5
+					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200)
+					{
+						var str = xmlhttp.responseText;
+						//alert(str);
+						var res = str.split(" "); 
+						// res[0]=LoginState + res[1]=email
+						// document.getElementById("LoginButton").innerHTML="";
+						//alert(res[0]);
+						if (res[0] == "1") { // Logged in
+							document.getElementById("loginButton").style.display="none";
+							document.getElementById("logoutButton").style.display="block";
+						} else if (res[0] == "0") { // logged out
+							document.getElementById("logoutButton").style.display="none";
+							document.getElementById("loginButton").style.display="block";
+						}
+					}
+				}
+				xmlhttp.open("GET",	
+				"http://cis-linux2.temple.edu/~tug28347/lab4/www/ReadButtons.php",true);
+				xmlhttp.send();
+			}
+		</script>
+	
+  </head>
+
+ <body ng-app="starter" onload="ReadButtons()">
+	
+    <div id="page1">
+		<ion-pane>
+		  <ion-header-bar class="bar-stable bar-energized" align-title="center">
+			<h1 class="title">Mike Kim's Spelling Bee</h1>
+			
+			<!--<a class="button button-clear" href="loginPage.php"><div id="buttonText">Login</div></a>-->
+			<!--<a class="button button-clear" href="loginPage.html"><div id="buttonText">Login</div></a>-->
+			
+			
+			<a class="button button-clear" href="loginPage.html" id="loginButton" style="display:block">Login</a>
+			<a class="button button-clear" href="http://cis-linux2.temple.edu/~tug28347/lab4/www/logout.php" id="logoutButton" style="display:none">Logout</a>
+			
+		  </ion-header-bar>
+		  <ion-content>
+		  
+			<!--SPEAKING BUTTON-->
+			<button id = "whatsMyWord" class= "button icon-left ion-volume-medium
+						  button-block button-stable">
+				<div id = "speakButtonText"> What's my word? </div>
+			</button>
+			
+			<!--TEXT INPUT BOX-->
+			<div class="list">
+				<div class="item item-input-inset">
+					<label class="item-input-wrapper">
+						<input name="Input" id="Input" type="text" placeholder="Write your answer here..." value="">
+					</label>
+					
+					<!--TEXT SUBMIT BUTTON-->
+					<button id="textSubmit" class="button button-medium">
+						Submit
+					</button>
+				</div>
+			</div>
+			
+			<!--PERFORMANCE LIST-->
+			<div class = "list card">
+				<div class = "item item-divider">
+					Performance
+				</div>
+				
+				<div id = "List">
+					
+				</div>
+			</div>
+		  </ion-content>
+		  
+		  <ion-footer-bar align-title="left" class="bar-energized">
+			<div class="buttons">
+				<h1 class="title"></h1>
+				<button id="resetButton" class="button button-clear">Reset</button>
+			</div>
+		  </ion-footer-bar>
+		</ion-pane>
+	</div>
+	
+	<script>
+		function loginLogout(loginState) {
+			/*
+		loginButton = "<a class='button button-clear' href='loginPage.php'>Login</a>";
+		logoutButton = "<a class='button button-clear' href='logoutPage.php'>Logout</a>"
+		*/
+		//alert(loginState);
+		if (loginState == 1) {
+			
+			document.getElementById("buttonText").innerHTML = 'Logout';
+			//document.getElementById("logButton").innerHTML = "<a class='button button-clear' href='logout.php'>Logout</a>";
+			
+		}
+		else if (loginState == 0) {
+			document.getElementById("buttonText").innerHTML = "Login";
+			//document.getElementById("logButton").innerHTML = "<a class='button button-clear' href='loginPage.php'>Login</a>";
+			
+		}
+		}
+	</script>
+
+	
+	<!-- php code
+		echo "<script type=".'text/javascript'.">loginLogout(".$_SESSION["LoginState"].");</script>";
+		
+		/*
+		else if ($_SESSION["LoginState"] == -1) {
+			echo "<script type='text/javascript'>alert('Login failed');</script>";
+		}
+		else if ($_SESSION["LoginState"] == -2) {
+			echo "<script type='text/javascript'>alert('Query failed');</script>";
+		}
+		*/
+	-->
+	
+  </body>
+</html>
